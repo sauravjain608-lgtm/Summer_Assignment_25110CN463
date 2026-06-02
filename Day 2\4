@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <limits.h>
+
+int main(void) {
+    long long n, original;
+    long long rev = 0;
+    int negative = 0;
+
+    printf("Enter an integer: ");
+    if (scanf("%lld", &n) != 1) {
+        printf("Invalid input.\n");
+        return 1;
+    }
+
+    if (n < 0) {
+        negative = 1;
+        n = -n;
+    }
+
+    original = n;
+    while (n > 0) {
+        int digit = n % 10;
+        // Check for overflow before multiplying by 10
+        if (rev > (LLONG_MAX - digit) / 10) {
+            printf("Reversed number would overflow.\n");
+            return 1;
+        }
+        rev = rev * 10 + digit;
+        n /= 10;
+    }
+
+    if (negative) rev = -rev;
+    printf("Original: %lld\nReversed: %lld\n", original * (negative ? -1 : 1), rev);
+    return 0;
+}
